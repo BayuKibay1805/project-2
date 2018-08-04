@@ -1,16 +1,3 @@
-const express = require('express');
-const http = require('http');
-const app = express();
-// 5 Minute Ping Times
-app.get("/", (request, response) => {
-  console.log(Date.now() + " Ping Received");
-  response.sendStatus(200);
-});
-app.listen(process.env.PORT);
-setInterval(() => {
-  http.get(`http://${process.env.PROJECT_DOMAIN}.glitch.me/`);
-}, 280000);
-
 const Discord = require("discord.js");
 const { Client, Util } = require('discord.js');
 const { prefix } = require('./config');
@@ -52,6 +39,7 @@ bot.on("ready", () => {
  bot.on("guildCreate", guild => {
     const liveJoin = bot.channels.get("473460297475031041"); //CHANGE TO YOUR CHANNEL-ID TO GET NOTIFICATIONS
     let liveJEmbed = new Discord.RichEmbed()
+    .setColor(0xe55EA2)
     .setAuthor(bot.user.username, bot.user.avatarURL)
     .setTitle(`Your Bot Has Started Serving A Guild`)
     .addField('Guild Name :', `${guild.name}`)
