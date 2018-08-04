@@ -11,13 +11,14 @@ const run = module.exports.run = async (client, msg, args) => {
     let mins = Math.floor((totalSeconds / 60) % 60);
     var cpu = process.cpuUsage().system / 1024 / 1024;
     var cpu_usage = Math.round(cpu * 100) / 100;
-    
+  
     let postMsg = await msg.channel.send("**⏱️Please Wait...**");
     let bicon = client.user.displayAvatarURL;
     let info = new Discord.RichEmbed()
         .setColor('RANDOM') 
         .setAuthor('Bot Stats :', bicon)
         .setThumbnail(bicon)
+        .addField('Total Shards :', `${client.shard.count} Shard(s) Active`) 
         .addField('Total Servers', `**${client.guilds.size}** guilds.`)
         .addField('Total Channels', `**${client.channels.size}** channels.`)
         .addField('Total Users', `**${client.users.size}** other users.`)
@@ -28,7 +29,7 @@ const run = module.exports.run = async (client, msg, args) => {
         .addField('CPU usage', `${cpu_usage}% Used`) 
         .addField('Uptime', `Days: ${days} | Hours: ${hours} | Minutes: ${mins} | Seconds: ${realTotalSecs}`)
         .addField('Ping', `${client.ping.toFixed(2)}ms`) 
-        .setFooter(`Request by : ${msg.author.username} | © αυɢ°Kibay#7078`)
+        .setFooter(`Request by : ${msg.author.username}`)
 
          setTimeout(() => {
          postMsg.edit(info)
