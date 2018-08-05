@@ -37,7 +37,7 @@ bot.on("ready", () => {
 });	
 
  bot.on("guildCreate", guild => {
-    const liveJoin = bot.channels.get("473460297475031041"); //CHANGE TO YOUR CHANNEL-ID TO GET NOTIFICATIONS
+    const liveJoin = bot.channels.get("475796303268544532"); //CHANGE TO YOUR CHANNEL-ID TO GET NOTIFICATIONS
     let liveJEmbed = new Discord.RichEmbed()
     .setColor(0xe55EA2)
     .setAuthor(bot.user.username, bot.user.avatarURL)
@@ -49,7 +49,7 @@ bot.on("ready", () => {
  });
 
  bot.on("guildDelete", guild => {
-    const liveLeave = bot.channels.get("473460297475031041"); //CHANGE TO YOUR CHANNEL-ID TO GET NOTIFICATIONS
+    const liveLeave = bot.channels.get("475796303268544532"); //CHANGE TO YOUR CHANNEL-ID TO GET NOTIFICATIONS
     let liveLEmbed = new Discord.RichEmbed()
     .setAuthor(bot.user.username, bot.user.avatarURL)
     .setTitle(`__*Your Bot Has Stopped Serving A Guild*__`)
@@ -58,18 +58,6 @@ bot.on("ready", () => {
     .setDescription(`Members Lost : ${guild.memberCount}`)
     liveLeave.send(liveLeave, liveLEmbed);
  });
-
-//bot.on("guildMemberAdd", member => {
-//	let autonick = JSON.parse(fs.readFileSync("./autonick.json", "utf8"));
-//	if (!autonick[member.guild.id]) { 
-//		autonick[member.guild.id] = {
-//			autonick: config.autonick
-//		};
-//	}
-//	var nick = autonick[member.guild.id].nick;
-//	if (!nick) return; 
-//	member.setNickname(nick`${member.user.username}`);
-//});
 
 bot.on('message', async msg => { // eslint-disable-line
 	if (msg.author.bot) return undefined;
@@ -83,7 +71,7 @@ bot.on('message', async msg => { // eslint-disable-line
 	let command = msg.content.toLowerCase().split(' ')[0];
 	command = command.slice(prefix.length)
 	
-	if (command === 'play') {
+	if (command === 'play'){
 		const voiceChannel = msg.member.voiceChannel;
 		if (!voiceChannel) return msg.channel.send('Sorry, you must be in Voice Channel before playing music:blush:');
 		const permissions = voiceChannel.permissionsFor(msg.client.user);
@@ -161,7 +149,7 @@ bot.on('message', async msg => { // eslint-disable-line
 		serverQueue.connection.dispatcher.end('Leave command has been used!');
 		return msg.channel.send('👋 Leaving Channel now!');
 				
-	} else if (command === 'volume') {
+	} else if (command === 'volume' || command === 'vol') {
 		if (!msg.member.voiceChannel) return msg.channel.send('You are not in a voice channel!');
 		if (!serverQueue) return msg.channel.send('There is nothing playing.');
 		if (!args[1]) return msg.channel.send(`🔊The current volume is: **${serverQueue.volume}**`);
@@ -216,6 +204,7 @@ async function handleVideo(video, msg, voiceChannel, playlist = false) {
 		id: video.id,
 		title: Util.escapeMarkdown(video.title),
 		url: `https://www.youtube.com/watch?v=${video.id}`,
+		durationh:  video.duration.hours,
 		durationm:  video.duration.minutes,
 		durations:  video.duration.seconds,
     room:       msg.member.voiceChannel.name,
@@ -275,10 +264,10 @@ function play(guild, song) {
 	.setAuthor(`🎶 Start Playing`)
   	.setThumbnail(`https://i.ytimg.com/vi/${song.id}/default.jpg?width=80&height=60`)
   	.addField('Title', `__[${song.title}](${song.url})__`, true)
-    .addField('Request by', `${song.request}`, true)
-    .addField('Playing at', `${song.room}`, true)
+    	.addField('Request by', `${song.request}`, true)
+    	.addField('Playing at', `${song.room}`, true)
   	.addField("Volume", `${serverQueue.volume}%`, true)
-  	.addField("Duration", `${song.durationm}min ${song.durations}sec`, true)
+  	.addField("Duration", `${song.durationh}hr ${song.durationm}min ${song.durations}sec`, true)
   	.setFooter("📝 If bot is not playing a music, maybe the bot is restarting!")
 	serverQueue.textChannel.send(embed);
 }
