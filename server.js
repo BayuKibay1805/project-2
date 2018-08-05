@@ -181,8 +181,14 @@ bot.on('message', async msg => { // eslint-disable-line
 	} else if (command === 'volume' || command === 'vol') {
 		if (!msg.member.voiceChannel) return msg.channel.send('You are not in a voice channel!');
 		if (!serverQueue) return msg.channel.send('There is nothing playing.');
-		if (!args[1]) return msg.channel.send(`🔊The current volume is: **${serverQueue.volume}**`);
-		if (serverQueue.volume = args[1] > 100) return msg.channel.send("❗ Don\'t hurt yourself, ***Max. Volume is 100!***");
+		let curvolembed = new Discord.RichEmbed()
+		.setColor(0xe55EA2)
+		.setDescription(`🔊The current volume is: **${serverQueue.volume}**`)
+		if (!args[1]) return msg.channel.send(curvolembed);
+		let embed = new Discord.RichEmbed()
+		.setColor(0xe55EA2)
+		.setDescription('❗ Don\'t hurt yourself, ***Max. Volume is 100%!***')
+		if (serverQueue.volume = args[1] > 100) return msg.channel.send(embed);
 		serverQueue.volume = args[1];
 		serverQueue.connection.dispatcher.setVolumeLogarithmic(args[1] / 100);
 		let volembed = new Discord.RichEmbed()
