@@ -71,15 +71,30 @@ bot.on('message', async msg => { // eslint-disable-line
 	let command = msg.content.toLowerCase().split(' ')[0];
 	command = command.slice(prefix.length)
 	
-	if (command === 'play'){
+	if (command === 'play' || command === 'p'){
 		const voiceChannel = msg.member.voiceChannel;
-		if (!voiceChannel) return msg.channel.send('Sorry, you must be in Voice Channel before playing music:blush:');
+		let embed = new Discord.RichEmbed()
+		.setColor(0xe55EA2)
+		.setDescription('Sorry, you must be in Voice Channel before playing music:blush:')
+		if (!voiceChannel) return msg.channel.send(embed);
 		const permissions = voiceChannel.permissionsFor(msg.client.user);
-		if (!permissions.has('CONNECT')) {
-			return msg.channel.send('I can`t connect, missing permissions:sad:');
+		if (!permissions.has('CONNECT')) {			
+		let embed = new Discord.RichEmbed()
+		.setColor(0xe55EA2)
+		.setDescription('I can`t connect, missing permissions:sad:')
+			return msg.channel.send(embed);
 		}
 		if (!permissions.has('SPEAK')) {
-			return msg.channel.send('i can`t speak, missing permissions:sad:');
+			let embed = new Discord.RichEmbed()
+			.setColor(0xe55EA2)
+			.setDescription('i can`t speak, missing permissions:sad:')
+			return msg.channel.send(embed);
+		}
+		if (!args[0]) {			
+			let embed = new Discord.RichEmbed()
+			.setColor(0xe55EA2)
+			.setDescription('Please provide Song Name/Video URL/Playlist URL')
+		msg.channel.send(embed);	
 		}
 
 		if (url.match(/^https?:\/\/(www.youtube.com|youtube.com|m.youtube.com)\/playlist(.*)$/)) {
@@ -88,9 +103,11 @@ bot.on('message', async msg => { // eslint-disable-line
 			for (const video of Object.values(videos)) {
 				const video2 = await youtube.getVideoByID(video.id); // eslint-disable-line no-await-in-loop
 				await handleVideo(video2, msg, voiceChannel, true); // eslint-disable-line no-await-in-loop
-			}
-						
-			return	msg.delete().then(msg => msg.channel.send(`☑ Playlist: **${playlist.title}** has been added to the queue!`));
+			}			
+			let embed = new Discord.RichEmbed()
+			.setColor(0xe55EA2)
+			.setDescription(`☑ Playlist: **${playlist.title}** has been added to the queue!`)
+			return	msg.delete().then(msg => msg.channel.send(embed));
 		} else {
 			try {
 				var video = await youtube.getVideo(url);
@@ -122,32 +139,44 @@ bot.on('message', async msg => { // eslint-disable-line
 					const videoIndex = parseInt(response.first().content);
 					var video = await youtube.getVideoByID(videos[videoIndex - 1].id);
 				} catch (err) {
-					console.error(err);
-					return msg.channel.send('⚠ I can`t find it.');
+					console.error(err);					
+			let embed = new Discord.RichEmbed()
+			.setColor(0xe55EA2)
+			.setDescription('⚠ I can`t find it.')
+					return msg.channel.send(embed);
 				}
 			}
 			return handleVideo(video, msg, voiceChannel);
 		}
 		
-	} else if (command === 'skip') {
+	} else if (command === 'skip' || command === 's') {
 		if (!msg.member.voiceChannel) return msg.channel.send('You`re not in Voice Channel!');
 		if (!serverQueue) return msg.channel.send('There is nothing playing.');
 		serverQueue.connection.dispatcher.end('Skip command has been used!');
-		return msg.channel.send('⏭ Skipping song');
+		let embed = new Discord.RichEmbed()
+		.setColor(0xe55EA2)
+		.setDescription('⏭ Skipping song')
+		return msg.channel.send(embed);
 				
 	} else if (command === 'stop') {
 		if (!msg.member.voiceChannel) return msg.channel.send('You are not in a voice channel!');
 		if (!serverQueue) return msg.channel.send('There is nothing playing that I could stop for you.');
 		serverQueue.songs = [];
 		serverQueue.connection.dispatcher.end('Stop command has been used!');
-		return msg.channel.send('⏹️ Stopping song and leaving channel');
+		let embed = new Discord.RichEmbed()
+		.setColor(0xe55EA2)
+		.setDescription('⏹️ Stopping song and leaving channel')
+		return msg.channel.send(embed);
 				
 	} else if (command === 'leave') {
 		if (!msg.member.voiceChannel) return msg.channel.send('You\'re not in a Voice Channel!');
 		if (!serverQueue) return msg.channel.send('I\'m not in Voice Channel');
 		serverQueue.songs = [];
 		serverQueue.connection.dispatcher.end('Leave command has been used!');
-		return msg.channel.send('👋 Leaving Channel now!');
+		let embed = new Discord.RichEmbed()
+		.setColor(0xe55EA2)
+		.setDescription('👋 Leaving Channel now!')
+		return msg.channel.send(embed);
 				
 	} else if (command === 'volume' || command === 'vol') {
 		if (!msg.member.voiceChannel) return msg.channel.send('You are not in a voice channel!');
@@ -158,7 +187,7 @@ bot.on('message', async msg => { // eslint-disable-line
 		serverQueue.connection.dispatcher.setVolumeLogarithmic(args[1] / 100);
 		let volembed = new Discord.RichEmbed()
 		.setColor(0xe55EA2)
-		.setFooter(`🔊 I set the volume to: ${args[1]}%`)
+		.setDescription(`🔊 I set the volume to: ${args[1]}%`)
 		return msg.channel.send(volembed)
 		
 	} else if (command === 'np') {
@@ -169,7 +198,7 @@ bot.on('message', async msg => { // eslint-disable-line
 		.setDescription(`**${serverQueue.songs[0].title}**`) 
 		return msg.channel.send(embed);
 		
-	} else if (command === 'queue') {
+	} else if (command === 'queue' || command === 'q') {
 		if (!serverQueue) return msg.channel.send('There is nothing playing.');
     let index = 0; 
 		let embed = new Discord.RichEmbed()
@@ -182,7 +211,10 @@ bot.on('message', async msg => { // eslint-disable-line
 		if (serverQueue && serverQueue.playing) {
 			serverQueue.playing = false;
 			serverQueue.connection.dispatcher.pause();
-			return msg.channel.send('⏸ Paused the music for you!');
+			let embed = new Discord.RichEmbed()
+			.setColor(0xe55EA2)
+			.setDescription('⏸ Paused the music for you!')
+			return msg.channel.send(embed)
 		}
 		return msg.channel.send('There is nothing playing.');
 		
@@ -190,7 +222,10 @@ bot.on('message', async msg => { // eslint-disable-line
 		if (serverQueue && !serverQueue.playing) {
 			serverQueue.playing = true;
 			serverQueue.connection.dispatcher.resume();
-			return msg.channel.send('▶ Resumed the music for you!');
+			let embed = new Discord.RichEmbed()
+			.setColor(0xe55EA2)
+			.setDescription('▶ Resumed the music for you!')
+			return msg.channel.send(embed)
 		}
 		return msg.channel.send('There is nothing playing.');
 	}
