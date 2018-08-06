@@ -90,14 +90,7 @@ bot.on('message', async msg => { // eslint-disable-line
 			.setDescription('i can`t speak, missing permissions:sad:')
 			return msg.channel.send(embed);
 		}
-		if (!args[1]) {			
-			let embed = new Discord.RichEmbed()
-			.setColor(0xe55EA2)
-			.setDescription('Please provide Song Name/Video URL/Playlist URL')
-		msg.channel.send(embed);	
-		}
-
-	} else if { (url.match(/^https?:\/\/(www.youtube.com|youtube.com|m.youtube.com)\/playlist(.*)$/)) {
+		if { (url.match(/^https?:\/\/(www.youtube.com|youtube.com|m.youtube.com)\/playlist(.*)$/)) {
 			const playlist = await youtube.getPlaylist(url);
 			const videos = await playlist.getVideos();
 			for (const video of Object.values(videos)) {
@@ -108,7 +101,7 @@ bot.on('message', async msg => { // eslint-disable-line
 			.setColor(0xe55EA2)
 			.setDescription(`☑ Playlist: **${playlist.title}** has been added to the queue!`)
 			return	msg.delete().then(msg => msg.channel.send(embed));
-		} else if {
+		} else {
 			try {
 				var video = await youtube.getVideo(url);
 			} catch (error) {
