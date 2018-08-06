@@ -90,7 +90,7 @@ bot.on('message', async msg => { // eslint-disable-line
 			.setDescription('i can`t speak, missing permissions:sad:')
 			return msg.channel.send(embed);
 		}
-		if (!args[0]) {			
+		if (!args[1]) {			
 			let embed = new Discord.RichEmbed()
 			.setColor(0xe55EA2)
 			.setDescription('Please provide Song Name/Video URL/Playlist URL')
