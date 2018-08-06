@@ -77,7 +77,7 @@ bot.on('message', async msg => { // eslint-disable-line
 		.setColor(0xe55EA2)
 		.setDescription('Sorry, you must be in Voice Channel before playing music:blush:')
 		if (!voiceChannel) return msg.channel.send(embed);
-		if (!args[1]) return msg.channel.send({ embed: { color: 0xe55EA2, description: 'Please provide Song name/Youtube URL/Youtube Playlist'}});
+		if (!args[1]) return msg.channel.send({ embed: { color: 0xe55EA2, description: 'Please provide [Song Name/Youtube URL/Youtube Playlist]'}});
 		const permissions = voiceChannel.permissionsFor(msg.client.user);
 		if (!permissions.has('CONNECT')) {			
 		let embed = new Discord.RichEmbed()
