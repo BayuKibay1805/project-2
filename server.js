@@ -90,7 +90,7 @@ bot.on('message', async msg => { // eslint-disable-line
 			.setDescription('i can`t speak, missing permissions:sad:')
 			return msg.channel.send(embed);
 		}
-		if { (url.match(/^https?:\/\/(www.youtube.com|youtube.com|m.youtube.com)\/playlist(.*)$/)) {
+		if (url.match(/^https?:\/\/(www.youtube.com|youtube.com|m.youtube.com)\/playlist(.*)$/)) {
 			const playlist = await youtube.getPlaylist(url);
 			const videos = await playlist.getVideos();
 			for (const video of Object.values(videos)) {
