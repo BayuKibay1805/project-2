@@ -97,7 +97,7 @@ bot.on('message', async msg => { // eslint-disable-line
 		msg.channel.send(embed);	
 		}
 
-	} else if (url.match(/^https?:\/\/(www.youtube.com|youtube.com|m.youtube.com)\/playlist(.*)$/)) {
+	} else if { (url.match(/^https?:\/\/(www.youtube.com|youtube.com|m.youtube.com)\/playlist(.*)$/)) {
 			const playlist = await youtube.getPlaylist(url);
 			const videos = await playlist.getVideos();
 			for (const video of Object.values(videos)) {
@@ -108,7 +108,7 @@ bot.on('message', async msg => { // eslint-disable-line
 			.setColor(0xe55EA2)
 			.setDescription(`☑ Playlist: **${playlist.title}** has been added to the queue!`)
 			return	msg.delete().then(msg => msg.channel.send(embed));
-		} else if 
+		} else if {
 			try {
 				var video = await youtube.getVideo(url);
 			} catch (error) {
