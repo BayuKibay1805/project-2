@@ -295,9 +295,11 @@ function play(guild, song) {
 		.on('error', error => console.error(error));
 	dispatcher.setVolumeLogarithmic(serverQueue.volume / 100);
 		
+	let bicon = ["http://images4.fanpop.com/image/photos/23400000/Tema-gifs-temari-23419885-500-375.gif"]
+  	let con = Math.floor((Math.random() * bicon.length));
 	let embed = new Discord.RichEmbed()
 	.setColor(0xe55EA2)
-	.setAuthor(`🎶 Start Playing`)
+	.setAuthor(`🎶 Start Playing`, bicon[con])
   	.setThumbnail(`https://i.ytimg.com/vi/${song.id}/default.jpg?width=80&height=60`)
   	.addField('Title', `__[${song.title}](${song.url})__`, true)
     	.addField('Request by', `${song.request}`, true)
